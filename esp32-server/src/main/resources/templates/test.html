@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmln="http//www.thymeleaf.org" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>智慧监控管理系统</title>
+  <script>
+    function searchTable() {
+      var input, filter, table, tr, td, i, j, txtValue;
+      input = document.getElementById("searchInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("recordTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 1; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td");
+        for (j = 0; j < td.length; j++) {
+          txtValue = td[j].textContent || td[j].innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+            break;
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+<h1>智慧监控管理系统</h1>
+
+<h2>操作记录</h2>
+<input type="text" id="searchInput" onkeyup="searchTable()" placeholder="输入关键字查询">
+<table>
+  <tr>
+    <th>id</th>
+    <th>操作人</th>
+    <th>操作</th>
+    <th>时间</th>
+  </tr>
+  <tr th:each="record : ${r}">
+    <!--    <td>1</td>-->
+    <!--    <td th:text="${record.id}"></td>-->
+    <!--    <td>修改监控区域</td>-->
+    <!--    <td>2023-04-24 10:30</td>-->
+
+    <td th:text="${record.getId()}">${r}</td>
+    <td th:text="${record.getUser()}"></td>
+    <td th:text="${record.getOperation()}"></td>
+    <td th:text="${record.getTime()}"></td>
+  </tr>
+  <!--  <tr>-->
+  <!--    <td>2</td>-->
+  <!--    <td>李四</td>-->
+  <!--    <td>查看监控画面</td>-->
+  <!--    <td>2023-04-23 14:20</td>-->
+  <!--  </tr>-->
+  <!--  <tr>-->
+  <!--    <td>3</td>-->
+  <!--    <td>王五</td>-->
+  <!--    <td>添加新的监控设备</td>-->
+  <!--    <td>2023-04-22 09:45</td>-->
+  <!--  </tr>-->
+</table>
+
+<h2>视频回放</h2>
+<video controls>
+  <source src="video.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+</body>
+
+</html>
+
+

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmln="http//www.thymeleaf.org" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>智慧监控管理系统</title>
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 32px;
+            margin-top: 40px;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 24px;
+            margin-top: 40px;
+        }
+
+        table {
+            background-color: #fff;
+            border-collapse: collapse;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px #ccc;
+            margin: 40px auto;
+            padding: 20px;
+            text-align: left;
+            width: 80%;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        input {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 10px;
+            width: 50%;
+        }
+
+        video {
+            display: block;
+            margin: 40px auto;
+            max-width: 80%;
+        }
+
+        .page-link {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            color: #333;
+            display: inline-block;
+            margin: 0 5px;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .active {
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
+    <script>
+        function searchTable() {
+            var input, filter, table, tr, td, i, j;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("dataTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 1; i < tr.length; i++) {
+                var visible = false;
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        visible = true;
+                        break;
+                    }
+                }
+                if (visible) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+        // function paginate(page) {
+        //     var table, rows, i;
+        //     table = document.getElementById("dataTable");
+        //     rows = table.getElementsByTagName("tr");
+        //     for(i = 0; i < rows.length; i++){
+        //         if(i <= page * 10 || i > page * 10 + 10)
+        //         rows[i].style.display = "none";
+        //     }
+        //     var links = document.getElementsByClassName("page-link");
+        //     for (i = 0; i < links.length; i++) {
+        //         if (links[i].getAttribute("data-page") == page) {
+        //             links[i].classList.add("active");
+        //         } else {
+        //             links[i].classList.remove("active");
+        //         }
+        //     }
+        // }
+
+        function paginate(page) {
+            var table, rows, i;
+            table = document.getElementById("dataTable");
+            rows = table.getElementsByTagName("tr");
+            for (i = 1; i < rows.length; i++) {
+                if (i > (page * 10) && i <= (page * 10) + 10) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+            var links = document.getElementsByClassName("page-link");
+            for (i = 0; i < links.length; i++) {
+                if (links[i].getAttribute("data-page") == page) {
+                    links[i].classList.add("active");
+                } else {
+                    links[i].classList.remove("active");
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>智慧监控管理系统</h1>
+<h2>操作记录</h2>
+<input type="text" id="searchInput" onkeyup="searchTable()" placeholder="搜索">
+<table id="dataTable">
+    <tr>
+        <th>id</th>
+        <th>操作人</th>
+        <th>操作</th>
+        <th>时间</th>
+    </tr>
+    <tr th:each="record : ${r}">
+        <!--    <td>1</td>-->
+        <!--    <td th:text="${record.id}"></td>-->
+        <!--    <td>修改监控区域</td>-->
+        <!--    <td>2023-04-24 10:30</td>-->
+        <td th:text="${record.getId()}"></td>
+        <td th:text="${record.getUser()}"></td>
+        <td th:text="${record.getOperation()}"></td>
+        <td th:text="${record.getTime()}"></td>
+    </tr>
+</table>
+<div>
+    <a class="page-link" href="#" data-page="0" onclick="paginate(0)">1</a>
+    <a class="page-link" href="#" data-page="1" onclick="paginate(1)">2</a>
+    <a class="page-link" href="#" data-page="2" onclick="paginate(2)">3</a>
+    <a class="page-link" href="#" data-page="3" onclick="paginate(3)">4</a>
+    <a class="page-link" href="#" data-page="4" onclick="paginate(4)">5</a>
+    <a class="page-link" href="#" data-page="5" onclick="paginate(5)">6</a>
+</div>
+<h2>监控画面</h2>
+<video width="640" height="480" controls>
+    <source src="video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+</body>
+</html>
+<script>
+    function paginate(page, totalSize) {
+        const table = document.getElementById("dataTable");
+        const rowsPerPage = 10;
+        const rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+        const numPages = Math.ceil(totalSize / 10) + 1;
+        let startRow, endRow;
+        if (page === 0) {
+            startRow = 0;
+            endRow = rowsPerPage;
+        } else {
+            startRow = page * rowsPerPage;
+            endRow = startRow + rowsPerPage;
+        }
+        for (let i = 0; i < rows.length; i++) {
+            if (i >= startRow && i < endRow) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+        rows[0].style.display = "";
+        const links = document.getElementsByClassName("page-link");
+        for (let i = 0; i < links.length; i++) {
+            if (i === page) {
+                links[i].classList.add("active");
+            } else {
+                links[i].classList.remove("active");
+            }
+        }
+    }
+    paginate(0);
+</script>
+<style>
+    table {
+        margin: auto;
+        border-collapse: collapse;
+        width: 70%;
+        background-color: #fff;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+        text-align: left;
+        padding: 12px;
+    }
+
+    th {
+        background-color: #007acc;
+        color: #fff;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    .page-link {
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        border: 1px solid #ddd;
+        color: #000;
+    }
+    .page-link.active {
+        background-color: #eee;
+    }
+    #searchInput {
+        padding: 12px 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        display: block;
+        margin: auto;
+        border: none;
+        border-radius: 4px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        width: 50%;
+    }
+    video {
+        margin: auto;
+        display: block;
+        margin-top: 30px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+</style>
