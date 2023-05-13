@@ -4,7 +4,7 @@
 # 文件夹说明
 Esp32_App：micropython代码，需要在esp32-cam板子上运行  
 Client_App：python编写的上位机客户端  
-esp32-server:Java编写的服务端代码，已部署至公网，可访问域名：待续
+esp32-server:Java编写的服务端代码，已部署至公网，可访问：http://139.224.133.71:9999/record/all， 查看操作记录和最新存储的视频记录。
 
 ![image](https://github.com/BigCJL/Esp32-Cam-SmartCamera/assets/79361803/6725927b-2e54-4cc6-b9cd-1c1e3f84f090)
 
